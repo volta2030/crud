@@ -16,31 +16,47 @@ import java.util.List;
 public class TestController {
 
     @Autowired
-    private DriverManagerDataSource dataSource;
+    private JdbcTemplate jdbcTemplate;
+
+    @GetMapping("/test")
+    public String test(Model model) {
+
+        List<Country> contries = getCountries();
+        Country country = contries.get(0);
+        setCountryToModel(country, model);
+
+        return "test";
+    }
+
+    private void setCountryToModel(Country country, Model model){
+        model.addAttribute("code", country.getCode());
+        model.addAttribute("continent", country.getContinent());
+        model.addAttribute("region", country.getRegion());
+        model.addAttribute("surfaceArea", country.getSurfaceArea());
+        model.addAttribute("indepYear", country.getIndepYear());
+        model.addAttribute("population", country.getPopulation());
+        model.addAttribute("lifeExpectancy", country.getLifeExpectancy());
+        model.addAttribute("gnp", country.getGnp());
+        model.addAttribute("gnpOld", country.getGnpOld());
+        model.addAttribute("localName", country.getLocalName());
+        model.addAttribute("governmentForm", country.getGovernmentForm());
+        model.addAttribute("headOfState", country.getHeadOfState());
+        model.addAttribute("capital", country.getCapital());
+        model.addAttribute("code2", country.getCode2());
+
+    }
 
     private List<Country> getCountries() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         String sql = "SELECT * FROM world.country LIMIT 20";
         List<Country> countries =  jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Country.class));
         return countries;
     }
 
     private void insert(String sql){
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update(sql);
     }
 
     private void insert(String sql, Object[] params){
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update(sql, params);
-    }
-
-
-    @GetMapping("/test")
-    public String index(Model model) {
-        model.addAttribute("name", "Load successful!");
-        insert("INSERT INTO country (Code) VALUE('ZZZ')");
-        getCountries();
-        return "index";
     }
 }

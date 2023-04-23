@@ -4,7 +4,7 @@ public class Country {
     private String code;
     private String continent;
 
-    private String Region;
+    private String region;
 
     private double surfaceArea;
 
@@ -53,11 +53,11 @@ public class Country {
     }
 
     public String getRegion() {
-        return Region;
+        return region;
     }
 
     public void setRegion(String region) {
-        Region = region;
+        region = region;
     }
 
     public double getSurfaceArea() {

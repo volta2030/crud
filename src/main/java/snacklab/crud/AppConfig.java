@@ -2,6 +2,7 @@ package snacklab.crud;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
@@ -14,6 +15,12 @@ public class AppConfig {
         dataSource.setUsername("root");
         dataSource.setPassword("backend1!");
         return dataSource;
+    }
+
+    @Bean
+    public JdbcTemplate jdbcTemplate(){
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource());
+        return jdbcTemplate;
     }
 
 }
